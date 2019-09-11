@@ -56,6 +56,58 @@ func UserAdd(w http.ResponseWriter, r *http.Request) {
 	replyOk(w)
 }
 
+func UserEdit(w http.ResponseWriter, r *http.Request) {
+	userName := mux.Vars(r)["user"]
+
+	if (!userExists(userName)) {
+		replyError(http.StatusNotFound, w, r, "Not Found")
+		return
+	}
+
+	user := User{}
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&user); err != nil {
+		replyError(http.StatusBadRequest, w, r, err.Error())
+		return
+	}
+	defer r.Body.Close()
+
+	usersIndex[user.UserName] = &user
+
+	replyOk(w)
+}
+
+func UserDel(w http.ResponseWriter, r *http.Request) {
+	userName := mux.Vars(r)["user"]
+
+	if (!userExists(userName)) {
+		replyError(http.StatusBadRequest, w, r, "Bad Request")
+		return
+	}
+
+	delete(usersIndex, userName)
+
+	replyOk(w)
+}
+
+func UserSearch(w http.ResponseWriter, r *http.Request) {
+	country := r.URL.Query().Get("country")
+	if country == "" {
+		replyError(http.StatusBadRequest, w, r, "Bad Request")
+		return
+	}
+
+	var response []*User
+	for _, user := range usersIndex {
+		if (strings.Compare(country, user.Country) == 0) {
+			response = append(response, user)
+		}
+	}
+
+	replyJSON(w, http.StatusOK, response)
+}
+
 func userExists(user string) bool {
 	if _, result := usersIndex[user]; result {
 		return true
