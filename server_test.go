@@ -8,7 +8,6 @@ import (
 	"testing"
 )
 
-
 var url = "http://127.0.0.1:8080/api/users/"
 
 func TestMain(t *testing.T) {
@@ -31,8 +30,8 @@ func TestMain(t *testing.T) {
 }
 
 func testStressAddUsers(t *testing.T) {
-	for i:=0; i<100; i++ {
-		addUserAndTest(t, 
+	for i := 0; i < 100; i++ {
+		addUserAndTest(t,
 			User{
 				"thx",
 				"1138",
@@ -44,8 +43,8 @@ func testStressAddUsers(t *testing.T) {
 }
 
 func testStressUpdateUsers(t *testing.T) {
-	for i:=0; i<100; i++ {
-		updateUserAndTest(t, 
+	for i := 0; i < 100; i++ {
+		updateUserAndTest(t,
 			User{
 				"kyuss",
 				"DnD",
@@ -58,8 +57,8 @@ func testStressUpdateUsers(t *testing.T) {
 }
 
 func testStressDelUsers(t *testing.T) {
-	for i:=0; i<100; i++ {
-		delUserAndTest(t, 
+	for i := 0; i < 100; i++ {
+		delUserAndTest(t,
 			User{
 				"thx",
 				"1138",
@@ -81,7 +80,7 @@ func testGetUsers(t *testing.T) {
 
 	defer res.Body.Close()
 
-	if (res.StatusCode != http.StatusOK) {
+	if res.StatusCode != http.StatusOK {
 		t.Errorf("Cannot GET user!")
 	}
 
@@ -92,12 +91,12 @@ func testGetUsers(t *testing.T) {
 		t.Errorf("Cannot decode user list!")
 	}
 
-	if (response == nil) {
+	if response == nil {
 		t.Errorf("Response should not be null!")
 	}
 
-	if (len(response) != 1) {
-		t.Errorf("Expected one user in the list!")	
+	if len(response) != 1 {
+		t.Errorf("Expected one user in the list!")
 	}
 }
 
@@ -114,7 +113,7 @@ func addUserAndTest(t *testing.T, user User) {
 
 	defer res.Body.Close()
 
-	if (res.StatusCode != http.StatusOK) {
+	if res.StatusCode != http.StatusOK {
 		t.Errorf("Cannot add user!")
 	}
 }
@@ -130,7 +129,7 @@ func delUserAndTest(t *testing.T, user User) {
 
 	defer res.Body.Close()
 
-	if (res.StatusCode != http.StatusOK) {
+	if res.StatusCode != http.StatusOK {
 		t.Errorf("Cannot del user!")
 	}
 }
@@ -148,7 +147,7 @@ func updateUserAndTest(t *testing.T, user User) {
 
 	defer res.Body.Close()
 
-	if (res.StatusCode != http.StatusOK) {
+	if res.StatusCode != http.StatusOK {
 		t.Errorf("Cannot update user!")
 	}
 }

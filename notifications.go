@@ -7,16 +7,16 @@ import (
 )
 
 const (
-	USER_ADDED = iota
+	USER_ADDED        = iota
 	USER_CHANGED_NICK = iota
 )
 
 type UserExternalNotification struct {
-	what int `json:"what"`
+	what int    `json:"what"`
 	data string `json:"data"`
 }
 
-// At this point I expect to have a notification server (custom or 
+// At this point I expect to have a notification server (custom or
 // built around kafka or other kind of message queues) if we have
 // the need to broadcast the message in a 1:n fashion.
 // Otherwise, like in this case it seems we have a 1:1 configuration

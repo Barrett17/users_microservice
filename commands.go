@@ -16,12 +16,12 @@ type responseErr struct {
 
 type User struct {
 	FirstName string `json:"firstname"`
-	LastName string `json:"lastname"`
-	UserName string `json:"username"`
+	LastName  string `json:"lastname"`
+	UserName  string `json:"username"`
 	// Do we want an md5-ed version here?
 	Password string `json:"password"`
-	Email string `json:"email"`
-	Country string `json:"country"`
+	Email    string `json:"email"`
+	Country  string `json:"country"`
 }
 
 // We mock the database here because it's quite irrelevant
@@ -46,7 +46,7 @@ func UserAdd(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	if (userExists(user.UserName)) {
+	if userExists(user.UserName) {
 		replyError(http.StatusBadRequest, w, r, "Bad Request")
 		return
 	}
@@ -63,7 +63,7 @@ func UserAdd(w http.ResponseWriter, r *http.Request) {
 func UserEdit(w http.ResponseWriter, r *http.Request) {
 	userName := mux.Vars(r)["user"]
 
-	if (!userExists(userName)) {
+	if !userExists(userName) {
 		replyError(http.StatusNotFound, w, r, "Not Found")
 		return
 	}
@@ -87,7 +87,7 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 func UserDel(w http.ResponseWriter, r *http.Request) {
 	userName := mux.Vars(r)["user"]
 
-	if (!userExists(userName)) {
+	if !userExists(userName) {
 		replyError(http.StatusBadRequest, w, r, "Bad Request")
 		return
 	}
@@ -106,7 +106,7 @@ func UserSearch(w http.ResponseWriter, r *http.Request) {
 
 	var response []*User
 	for _, user := range usersIndex {
-		if (strings.Compare(country, user.Country) == 0) {
+		if strings.Compare(country, user.Country) == 0 {
 			response = append(response, user)
 		}
 	}
