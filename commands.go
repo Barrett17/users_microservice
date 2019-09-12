@@ -54,6 +54,10 @@ func UserAdd(w http.ResponseWriter, r *http.Request) {
 	usersIndex[user.UserName] = &user
 
 	replyOk(w)
+
+	// Execute this in a secondary thread, so that it doesn't
+	// slow down response time.
+	go UserAdded(user)
 }
 
 func UserEdit(w http.ResponseWriter, r *http.Request) {
@@ -76,6 +80,8 @@ func UserEdit(w http.ResponseWriter, r *http.Request) {
 	usersIndex[user.UserName] = &user
 
 	replyOk(w)
+
+	go UserChanged(user)
 }
 
 func UserDel(w http.ResponseWriter, r *http.Request) {
